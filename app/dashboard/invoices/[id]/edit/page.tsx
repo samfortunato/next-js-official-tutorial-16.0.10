@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation';
+
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
 
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
@@ -13,6 +15,8 @@ export default async function Page(props: {
 		fetchInvoiceById(id),
 		fetchCustomers(),
 	]);
+
+	if (!invoice) notFound();
 
 	return (
 		<main>
