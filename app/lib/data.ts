@@ -1,5 +1,6 @@
 import postgres from 'postgres';
 import {
+  Customer,
   CustomerField,
   CustomersTableType,
   InvoiceForm,
@@ -149,6 +150,7 @@ export async function fetchInvoiceById(id: string) {
         invoices.id,
         invoices.customer_id,
         invoices.amount,
+        invoices.date,
         invoices.status
       FROM invoices
       WHERE invoices.id = ${id};
@@ -164,6 +166,25 @@ export async function fetchInvoiceById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
+  }
+}
+
+export async function fetchCustomerById(id: string) {
+  try {
+    const customer = await sql<Customer[]>`
+      SELECT
+        id,
+        name,
+        email,
+        image_url
+      FROM customers
+      WHERE id = ${id};
+    `;
+
+    return customer[0];
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch customer name.');
   }
 }
 

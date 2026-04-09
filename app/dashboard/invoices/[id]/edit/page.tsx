@@ -1,9 +1,27 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
+import { fetchCustomerById, fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
 
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import Form from '@/app/ui/invoices/edit-form';
+
+import { formatDateToLocal } from '@/app/lib/utils';
+
+export async function generateMetadata(
+	{ params }: { params: Promise<{ id: string }> },
+): Promise<Metadata> {
+	const { id } = await params;
+
+	const invoice = await fetchInvoiceById(id);
+	const customer = await fetchCustomerById(invoice.customer_id);
+
+	const localInvoiceDate = formatDateToLocal(invoice.date);
+
+	return {
+		title: `Edit Invoice for ${customer.name} on ${localInvoiceDate}`,
+	};
+}
 
 export default async function Page(props: {
 	params: Promise<{ id: string }>,
