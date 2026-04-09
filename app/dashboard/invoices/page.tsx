@@ -12,7 +12,7 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { lusitana } from '@/app/ui/fonts';
 
 export const metadata: Metadata = {
-	title: 'Invoices | Acme Dashboard',
+	title: 'Invoices',
 };
 
 export default async function Page(props: {
